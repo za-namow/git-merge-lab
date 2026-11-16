@@ -127,7 +127,8 @@ if __name__ == "__main__":
     dummy = Creature("Practice Dummy", 40, 0)
     serpent.attack(dummy)
     print(f"Dummy HP should be 33 → Actual: {dummy.hp}")
-    print()    print("=== Tests Completed ===")
+    print()    
+    print("=== Tests Completed ===")
     print()
 
     print("=== FlyingCreature Tests ===\n")
