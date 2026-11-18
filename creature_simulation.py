@@ -68,6 +68,38 @@ class FlyingCreature(Creature):
             target.hp = 0
         print(f"{target.name} HP is now {target.hp}")
 
+# ===============================
+# FireCreature Branch
+# ===============================
+
+class FireCreature(Creature):
+    def __init__(self, name, hp, attack_power):
+        super().__init__(name, hp, attack_power)
+        self.fire_level = 0
+
+    def emit_fire(self, new_fire_level):
+        if new_fire_level < 0:
+            self.fire_level = 0
+        elif new_fire_level > 100:
+            self.fire_level = 100
+        else:
+            self.fire_level = new_fire_level
+        print(f"{self.name} now emits fiery at level of {self.fire_level}!")
+
+    def attack(self, target):
+        if not self.is_alive():
+            print(f"{self.name} cannot attack because it is defeated.")
+            return
+
+        total_damage = self.attack_power + (self.fire_level // 10)
+
+        print(f"{self.name} sneezes a giant fireballz at fire level {self.fire_level}!")
+        print(f"{target.name} gets toasted like a marshmallow for {total_damage} damage!")
+        target.hp -= total_damage
+        if target.hp < 0:
+            target.hp = 0
+        print(f"{target.name} HP is now {target.hp}")
+
 if __name__ == "__main__":
     print("=== Creature Class Tests ===\n")
 
@@ -143,3 +175,31 @@ if __name__ == "__main__":
     print()
     print("=== Tests Completed ===")
     print()
+
+    print("=== FireCreature Tests ===\n")
+
+    # Test 1: emit_fire() clamping (0 to 100)
+    testsubject = FireCreature("SKE ISP", 70, 10)
+    print("Test 11: emit_fire() clamping")
+    testsubject.emit_fire(150)
+    print(f"Fire level should be 100 >>> Actual: {testsubject.fire_level}")
+    testsubject.emit_fire(-10)
+    print(f"Fire level should be 0 >>> Actual: {testsubject.fire_level}")
+    print()
+
+    # Test 2: Fiery attack (10 base + 5 fire from level 50 = 15 damage)
+    dummy = Creature("Practice Dummy", 50, 0)
+    testsubject.emit_fire(50)
+    print("Test 2: Fiery attack")
+    testsubject.attack(dummy)
+    print(f"Dummy HP should be 35 >>> Actual: {dummy.hp}")
+    
+    print()
+
+    # Test 3: Defeated FireCreature cannot attack
+    testsubject.hp = 0
+    print("Test 3: Defeated creature cannot attack")
+    testsubject.attack(dummy)
+    print(f"Dummy HP should stay 35 >>> Actual: {dummy.hp}")
+    print()
+    print("=== Tests Completed ===")
